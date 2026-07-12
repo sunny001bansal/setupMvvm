@@ -46,6 +46,51 @@ Plugins applied: `com.google.dagger.hilt.android` (2.59.2) and `com.google.devto
 | `io.coil-kt.coil3:coil-compose` | 3.4.0 | `AsyncImage` composable for loading images |
 | `io.coil-kt.coil3:coil-network-okhttp` | 3.4.0 | Network fetching for Coil via OkHttp |
 
+### Testing
+
+Dependencies cover all three test types. Which source set a dependency lives in determines where the test runs.
+
+#### Unit tests — `src/test/` (JVM, host-side, run via `./gradlew testDebugUnitTest`)
+| Library | Version | Purpose |
+|---|---|---|
+| `junit:junit` | 4.13.2 | JUnit4 test framework |
+| `org.jetbrains.kotlinx:kotlinx-coroutines-test` | 1.11.0 | `runTest`, test dispatchers for coroutine/ViewModel testing |
+| `app.cash.turbine:turbine` | 1.2.1 | Testing Kotlin `Flow` emissions (StateFlow/SharedFlow) |
+| `io.mockk:mockk` | 1.14.3 | Kotlin mocking framework |
+| `org.robolectric:robolectric` | 4.16.1 | Run Android/Compose UI tests host-side without a device |
+| `androidx.test.ext:junit` | 1.3.0 | AndroidX JUnit runner/rules for Robolectric |
+| `androidx.compose.ui:ui-test-junit4` | (Compose BOM) | Compose UI test APIs (usable host-side via Robolectric) |
+
+#### Instrumented tests — `src/androidTest/` (device/emulator, run via `./gradlew connectedDebugAndroidTest`)
+| Library | Version | Purpose |
+|---|---|---|
+| `androidx.compose.ui:ui-test-junit4` | (Compose BOM) | Compose UI interaction/assertion APIs |
+| `androidx.test.espresso:espresso-core` | 3.7.0 | Espresso (for any View-based UI) |
+| `androidx.test.ext:junit` | 1.3.0 | AndroidX JUnit integration |
+| `androidx.test:runner` | 1.7.0 | Instrumentation test runner |
+| `androidx.test:rules` | 1.7.0 | Test rules (`ActivityScenarioRule`, etc.) |
+| `androidx.navigation:navigation-testing` | 2.9.8 | `TestNavHostController` for navigation tests |
+| `com.google.dagger:hilt-android-testing` | 2.59.2 | Hilt test graph (`@HiltAndroidTest`, `HiltAndroidRule`) — compiler applied via `kspAndroidTest` |
+| `io.mockk:mockk-android` | 1.14.3 | MockK on-device |
+
+A custom [`HiltTestRunner`](app/src/androidTest/java/com/silentcreator/basicmvvmsetup/HiltTestRunner.kt) swaps in `HiltTestApplication`; it's wired via `testInstrumentationRunner` in [app/build.gradle.kts](app/build.gradle.kts).
+
+#### Screenshot tests — `src/screenshotTest/` (Compose Preview Screenshot Testing, host-side)
+| Library / Plugin | Version | Purpose |
+|---|---|---|
+| `com.android.compose.screenshot` (plugin) | 0.0.1-alpha15 | Google's first-party Compose preview screenshot testing tool |
+| `com.android.tools.screenshot:screenshot-validation-api` | 0.0.1-alpha15 | `@PreviewTest` annotation + validation API |
+| `androidx.compose.ui:ui-tooling` | (Compose BOM) | Renders `@Preview` composables for screenshotting |
+
+Enabled by `android.experimental.enableScreenshotTest=true` in [gradle.properties](gradle.properties) plus the matching `experimentalProperties` flag in the module build file.
+
+- Generate/update reference images: `./gradlew updateDebugScreenshotTest` (stored in `app/src/screenshotTestDebug/reference/`)
+- Validate against references: `./gradlew validateDebugScreenshotTest` (HTML report under `app/build/reports/screenshotTest/`)
+
+Write screenshot tests by putting `@PreviewTest @Preview @Composable` functions in `app/src/screenshotTest/java/...`.
+
+> **Note:** Compose Preview Screenshot Testing is still in **alpha**. If you later want device-rendered screenshots (edge-to-edge, system UI), add [Dropshots](https://github.com/dropbox/dropshots) as an instrumented alternative.
+
 ## Version Notes
 
 - **Hilt 2.59.2 and KSP 2.3.10** are the latest versions and are also the minimum lines required for AGP 9 compatibility.

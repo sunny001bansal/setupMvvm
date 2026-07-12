@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
+    alias(libs.plugins.screenshot)
 }
 
 android {
@@ -11,6 +12,9 @@ android {
         version = release(37)
     }
 
+    // Enables the screenshotTest source set for Compose Preview Screenshot Testing.
+    experimentalProperties["android.experimental.enableScreenshotTest"] = true
+
     defaultConfig {
         applicationId = "com.silentcreator.basicmvvmsetup"
         minSdk = 24
@@ -18,7 +22,14 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        // Custom runner that swaps in HiltTestApplication for instrumented Hilt tests.
+        testInstrumentationRunner = "com.silentcreator.basicmvvmsetup.HiltTestRunner"
+    }
+
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+        }
     }
 
     buildTypes {
@@ -68,11 +79,34 @@ dependencies {
     implementation(libs.coil.compose)
     implementation(libs.coil.network.okhttp)
 
+    // ---- Unit tests (test sourceset: JVM + Robolectric) ----
     testImplementation(libs.junit)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.turbine)
+    testImplementation(libs.mockk)
+    testImplementation(libs.robolectric)
+    testImplementation(libs.androidx.junit)
+    // Run Compose UI tests host-side (via Robolectric) from the test sourceset.
+    testImplementation(platform(libs.androidx.compose.bom))
+    testImplementation(libs.androidx.compose.ui.test.junit4)
+
+    // ---- Instrumented tests (androidTest sourceset: device/emulator) ----
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.test.runner)
+    androidTestImplementation(libs.androidx.test.rules)
+    androidTestImplementation(libs.androidx.navigation.testing)
+    androidTestImplementation(libs.mockk.android)
+    // Hilt in instrumented tests
+    androidTestImplementation(libs.hilt.android.testing)
+    kspAndroidTest(libs.hilt.compiler)
+
+    // ---- Screenshot tests (screenshotTest sourceset) ----
+    screenshotTestImplementation(libs.screenshot.validation.api)
+    screenshotTestImplementation(libs.androidx.compose.ui.tooling)
+
     debugImplementation(libs.androidx.compose.ui.test.manifest)
     debugImplementation(libs.androidx.compose.ui.tooling)
 }
