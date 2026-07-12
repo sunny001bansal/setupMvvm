@@ -1,4 +1,4 @@
-package com.silentcreator.basicmvvmsetup.data
+package com.silentcreator.basicmvvmsetup.domain.model
 
 data class UserData(
     val results: List<Result>

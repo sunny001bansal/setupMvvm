@@ -1,7 +1,8 @@
 package com.silentcreator.basicmvvmsetup
 
-import com.silentcreator.basicmvvmsetup.data.UserData
-import com.silentcreator.basicmvvmsetup.repository.UserRepository
+import com.silentcreator.basicmvvmsetup.domain.model.UserData
+import com.silentcreator.basicmvvmsetup.domain.repository.UserRepository
+import com.silentcreator.basicmvvmsetup.domain.use_case.GetUserDetailsUseCase
 import com.silentcreator.basicmvvmsetup.ui.UserViewModel
 import com.silentcreator.basicmvvmsetup.ui.state.UserUiState
 import io.mockk.coEvery
@@ -21,12 +22,14 @@ import org.junit.Test
 @OptIn(ExperimentalCoroutinesApi::class)
 class UserViewModelTest {
     private val repository = mockk<UserRepository>()
+    private lateinit var getUserDetailsUseCase: GetUserDetailsUseCase
     private lateinit var viewModel: UserViewModel
     private val testDispatcher = StandardTestDispatcher()
 
     @Before
     fun setup() {
         Dispatchers.setMain(testDispatcher)
+        getUserDetailsUseCase = GetUserDetailsUseCase(repository)
     }
 
     @After
@@ -47,7 +50,7 @@ class UserViewModelTest {
         )
         coEvery { repository.fetchUserDetails() } returns Result.success(mockUser)
 
-        viewModel = UserViewModel(repository) // triggers init which calls loadUser()
+        viewModel = UserViewModel(getUserDetailsUseCase)
         
         advanceUntilIdle()
 
@@ -59,7 +62,7 @@ class UserViewModelTest {
         val errorMessage = "Network Error"
         coEvery { repository.fetchUserDetails() } returns Result.failure(Exception(errorMessage))
 
-        viewModel = UserViewModel(repository)
+        viewModel = UserViewModel(getUserDetailsUseCase)
         
         advanceUntilIdle()
 

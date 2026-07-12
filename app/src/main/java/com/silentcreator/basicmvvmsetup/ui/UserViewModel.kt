@@ -2,7 +2,7 @@ package com.silentcreator.basicmvvmsetup.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.silentcreator.basicmvvmsetup.repository.UserRepository
+import com.silentcreator.basicmvvmsetup.domain.use_case.GetUserDetailsUseCase
 import com.silentcreator.basicmvvmsetup.ui.state.UserUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -11,7 +11,9 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class UserViewModel @Inject constructor(private val repository: UserRepository) : ViewModel() {
+class UserViewModel @Inject constructor(
+    private val getUserDetailsUseCase: GetUserDetailsUseCase
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow<UserUiState>(UserUiState.Loading)
     val uiState = _uiState.asStateFlow()
@@ -23,10 +25,9 @@ class UserViewModel @Inject constructor(private val repository: UserRepository) 
     fun loadUser() {
         viewModelScope.launch {
             _uiState.value = UserUiState.Loading
-            repository.fetchUserDetails()
+            getUserDetailsUseCase()
                 .onSuccess { _uiState.value = UserUiState.Success(it) }
                 .onFailure { _uiState.value = UserUiState.Error(it.message ?: "Unknown Error") }
         }
     }
-
 }

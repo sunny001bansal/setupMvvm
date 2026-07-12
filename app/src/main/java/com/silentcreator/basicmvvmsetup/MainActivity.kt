@@ -38,7 +38,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil3.compose.AsyncImage
-import com.silentcreator.basicmvvmsetup.data.UserData
+import com.silentcreator.basicmvvmsetup.domain.model.UserData
 import com.silentcreator.basicmvvmsetup.ui.UserViewModel
 import com.silentcreator.basicmvvmsetup.ui.state.UserUiState
 import com.silentcreator.basicmvvmsetup.ui.theme.BasicMVVMSetupTheme

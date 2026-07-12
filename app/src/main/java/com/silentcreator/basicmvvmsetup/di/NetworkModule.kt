@@ -1,6 +1,6 @@
 package com.silentcreator.basicmvvmsetup.di
 
-import com.silentcreator.basicmvvmsetup.network.ApiInterface
+import com.silentcreator.basicmvvmsetup.data.remote.ApiInterface
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

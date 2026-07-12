@@ -1,7 +1,7 @@
 package com.silentcreator.basicmvvmsetup.di
 
-import com.silentcreator.basicmvvmsetup.repository.UserRepository
-import com.silentcreator.basicmvvmsetup.repository.UserRepositoryImpl
+import com.silentcreator.basicmvvmsetup.data.repository.UserRepositoryImpl
+import com.silentcreator.basicmvvmsetup.domain.repository.UserRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
