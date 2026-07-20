@@ -2,7 +2,7 @@ package com.silentcreator.basicmvvmsetup.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.silentcreator.basicmvvmsetup.domain.data.UserDataItem
+import com.silentcreator.basicmvvmsetup.domain.model.UserDataItem
 import com.silentcreator.basicmvvmsetup.domain.useCase.GetUserDetailsUsecase
 import com.silentcreator.basicmvvmsetup.ui.state.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel

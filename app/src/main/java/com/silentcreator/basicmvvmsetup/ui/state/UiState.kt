@@ -1,6 +1,6 @@
 package com.silentcreator.basicmvvmsetup.ui.state
 
-import com.silentcreator.basicmvvmsetup.domain.data.UserDataItem
+import com.silentcreator.basicmvvmsetup.domain.model.UserDataItem
 
 sealed interface UiState {
     object loading: UiState

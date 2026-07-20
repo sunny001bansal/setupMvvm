@@ -1,6 +1,6 @@
 package com.silentcreator.basicmvvmsetup.domain.useCase
 
-import com.silentcreator.basicmvvmsetup.domain.data.UserDataItem
+import com.silentcreator.basicmvvmsetup.domain.model.UserDataItem
 import com.silentcreator.basicmvvmsetup.domain.repository.UserRepository
 import javax.inject.Inject
 

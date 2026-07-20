@@ -1,7 +1,7 @@
 package com.silentcreator.basicmvvmsetup.data
 
 import com.google.gson.annotations.SerializedName
-import com.silentcreator.basicmvvmsetup.domain.data.UserDataItem
+import com.silentcreator.basicmvvmsetup.domain.model.UserDataItem
 
 data class UserDataDtoItem(
     @SerializedName("address")

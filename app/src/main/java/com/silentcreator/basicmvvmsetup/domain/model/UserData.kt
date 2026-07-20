@@ -1,4 +1,4 @@
-package com.silentcreator.basicmvvmsetup.domain.data
+package com.silentcreator.basicmvvmsetup.domain.model
 
 
     data class UserDataItem(

@@ -1,6 +1,6 @@
 package com.silentcreator
 
-import com.silentcreator.basicmvvmsetup.domain.data.UserDataItem
+import com.silentcreator.basicmvvmsetup.domain.model.UserDataItem
 import com.silentcreator.basicmvvmsetup.domain.useCase.GetUserDetailsUsecase
 import com.silentcreator.basicmvvmsetup.ui.UserViewModel
 import com.silentcreator.basicmvvmsetup.ui.state.UiState
