@@ -1,5 +1,6 @@
 package com.silentcreator.basicmvvmsetup.di
 
+import com.silentcreator.basicmvvmsetup.data.ApiInterFace
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -17,14 +18,14 @@ object NetworkModule {
     @Singleton
     fun provideRetrofit(): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("https://randomuser.me/")
+            .baseUrl("https://jsonplaceholder.typicode.com/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
 
-//    @Provides
-//    @Singleton
-//    fun provideApiInterface(retrofit: Retrofit): ApiInterface {
-//        return retrofit.create(ApiInterface::class.java)
-//    }
+    @Provides
+    @Singleton
+    fun provideApiInterface(retrofit: Retrofit): ApiInterFace {
+        return retrofit.create(ApiInterFace::class.java)
+    }
 }

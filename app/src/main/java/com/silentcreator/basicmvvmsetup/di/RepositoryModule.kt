@@ -1,5 +1,7 @@
 package com.silentcreator.basicmvvmsetup.di
 
+import com.silentcreator.basicmvvmsetup.data.UserRepositoryImpl
+import com.silentcreator.basicmvvmsetup.domain.repository.UserRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -10,9 +12,9 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 abstract class RepositoryModule {
 
-//    @Binds
-//    @Singleton
-//    abstract fun bindUserRepository(
-//        userRepositoryImpl: UserRepositoryImpl
-//    ): UserRepository
+    @Binds
+    @Singleton
+    abstract fun bindUserRepository(
+        userRepositoryImpl: UserRepositoryImpl
+    ): UserRepository
 }
