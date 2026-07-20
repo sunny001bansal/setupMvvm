@@ -8,12 +8,14 @@ class UserRepositoryImpl @Inject constructor(private val apiInterFace: ApiInterF
     override suspend fun getUserDetails(): Result<List<UserDataItem>> {
         return try {
             val response = apiInterFace.getUserDetails()
-            if (response.isSuccessful && response.body() !=null){
-                Result.success(response.body()!!)
-            }else{
-                Result.failure(Exception("Failed to fetch user details"))
+            val body = response.body()
+            if (response.isSuccessful && body != null) {
+                val domainUsers = body.map { it.toDomain() }
+                Result.success(domainUsers)
+            } else {
+                Result.failure(Exception("Failed to fetch user details: ${response.message()}"))
             }
-        }catch (e: Exception){
+        } catch (e: Exception) {
             Result.failure(e)
         }
     }
